@@ -30,6 +30,7 @@ app.use(passport.initialize());
 // routes
 app.use("/auth", require("./routes/auth"));
 app.use("/users", require("./routes/user"));
+app.use("/transcribe", require("./routes/transcription"));
 
 app.use("/", require("./routes/docs"));
 

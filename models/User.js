@@ -32,10 +32,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    summaryList: [
+    transcription: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "Summary",
+        ref: "Transcription",
       },
     ],
     verifyToken: {
@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["local", "google"],
       default: "local",
+    },
+    avatar: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

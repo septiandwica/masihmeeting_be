@@ -11,29 +11,53 @@ const { isLoggedIn } = require("../middlewares/authMiddlewares");
 
 const router = express.Router();
 
-// Register
+/**
+ * @route   POST /auth/register
+ * @desc    Register akun baru dan kirim email verifikasi
+ * @access  Public
+ */
 router.post("/register", register);
 
-// Login
+/**
+ * @route   POST /auth/login
+ * @desc    Login user menggunakan email dan password
+ * @access  Public
+ */
 router.post("/login", login);
 
-// Profile (protected route)
+/**
+ * @route   GET /auth/profile
+ * @desc    Mendapatkan data profil user yang sedang login
+ * @access  Private
+ */
 router.get("/profile", isLoggedIn, getProfile);
 
-// Google OAuth
+/**
+ * @route   GET /auth/google
+ * @desc    Redirect user ke Google untuk autentikasi
+ * @access  Public
+ */
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// Google OAuth callback
+/**
+ * @route   GET /auth/google/callback
+ * @desc    Callback dari Google OAuth, mengembalikan token dan data user
+ * @access  Public
+ */
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false, failureRedirect: "/" }),
   googleCallback
 );
 
-// Email verification
+/**
+ * @route   GET /auth/verify/:token
+ * @desc    Verifikasi email user berdasarkan token
+ * @access  Public
+ */
 router.get("/verify/:token", verifyEmail);
 
 module.exports = router;

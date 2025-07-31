@@ -25,46 +25,14 @@ router.get("/", isLoggedIn, checkAdmin, getAllUsers);
  * @desc    Mendapatkan user berdasarkan ID
  * @access  Admin atau User itu sendiri
  */
-router.get(
-  "/:id",
-  isLoggedIn,
-  async (req, res, next) => {
-    if (
-      req.user.role !== "admin" &&
-      req.user._id.toString() !== req.params.id
-    ) {
-      return res.status(403).json({
-        success: false,
-        message: "Akses ditolak.",
-      });
-    }
-    next();
-  },
-  getUserById
-);
+router.get("/:id", isLoggedIn, checkAdmin, getUserById);
 
 /**
  * @route   PUT /users/:id
  * @desc    Update user (oleh admin atau user itu sendiri)
  * @access  Admin/User
  */
-router.put(
-  "/:id",
-  isLoggedIn,
-  async (req, res, next) => {
-    if (
-      req.user.role !== "admin" &&
-      req.user._id.toString() !== req.params.id
-    ) {
-      return res.status(403).json({
-        success: false,
-        message: "Akses ditolak.",
-      });
-    }
-    next();
-  },
-  updateUser
-);
+router.put("/:id", isLoggedIn, checkAdmin, updateUser);
 
 /**
  * @route   DELETE /users/:id

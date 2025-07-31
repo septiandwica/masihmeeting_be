@@ -10,59 +10,166 @@ router.get("/", (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>API Documentation</title>
+        <title>MasihMeeting API Docs</title>
         <style>
-          body { font-family: sans-serif; padding: 2rem; line-height: 1.6; }
+          body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; color: #333; }
           h1 { color: #4f46e5; }
-          code { background: #f1f1f1; padding: 2px 4px; border-radius: 4px; }
-          .endpoint { margin-bottom: 1.5rem; }
+          code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+          .endpoint { margin-bottom: 2rem; padding: 1rem; background: #fff; border-left: 4px solid #4f46e5; box-shadow: 0 0 3px rgba(0,0,0,0.1); }
+          pre { background: #f1f1f1; padding: 1rem; overflow-x: auto; }
         </style>
       </head>
       <body>
-        <h1>MasihMeeting API Documentation</h1>
+        <h1>📘 MasihMeeting API Documentation</h1>
 
-        <h2>Auth Routes</h2>
+        <h2>🔐 Auth Routes</h2>
+
         <div class="endpoint">
-          <strong>POST</strong> <code>/auth/register</code><br />
-          Register user baru.
-        </div>
-        <div class="endpoint">
-          <strong>POST</strong> <code>/auth/login</code><br />
-          Login user.
-        </div>
-        <div class="endpoint">
-          <strong>GET</strong> <code>/auth/profile</code><br />
-          Mendapatkan profile user yang sedang login. <em>(auth required)</em>
-        </div>
-        <div class="endpoint">
-          <strong>GET</strong> <code>/auth/google</code><br />
-          Login via Google.
-        </div>
-        <div class="endpoint">
-          <strong>GET</strong> <code>/auth/verify/:token</code><br />
-          Verifikasi email user.
+          <h3>POST /auth/register</h3>
+          <p>Register user baru</p>
+          <strong>Request Body:</strong>
+          <pre>{
+  "name": "Budi",
+  "email": "budi@example.com",
+  "password": "password123"
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "User berhasil dibuat. Silakan cek email untuk verifikasi.",
+  "user": {
+    "id": "xxx",
+    "email": "budi@example.com",
+    "name": "Budi",
+    "role": "user"
+  }
+}</pre>
         </div>
 
-        <h2>User Routes</h2>
         <div class="endpoint">
-          <strong>GET</strong> <code>/users</code><br />
-          Mendapatkan semua user. <em>(admin only)</em>
+          <h3>POST /auth/login</h3>
+          <p>Login dan mendapatkan token JWT</p>
+          <strong>Request Body:</strong>
+          <pre>{
+  "email": "budi@example.com",
+  "password": "password123"
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Login berhasil",
+  "token": "jwt-token",
+  "user": {
+    "id": "xxx",
+    "email": "budi@example.com",
+    "name": "Budi",
+    "role": "user"
+  }
+}</pre>
         </div>
+
         <div class="endpoint">
-          <strong>GET</strong> <code>/users/:id</code><br />
-          Mendapatkan detail user berdasarkan ID. <em>(admin or owner)</em>
+          <h3>GET /auth/profile</h3>
+          <p>Mendapatkan profil user yang sedang login</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "user": {
+    "id": "xxx",
+    "name": "Budi",
+    "email": "budi@example.com",
+    "role": "user"
+  }
+}</pre>
         </div>
+
         <div class="endpoint">
-          <strong>PUT</strong> <code>/users/:id</code><br />
-          Update data user. <em>(admin or owner)</em>
+          <h3>GET /auth/verify/:token</h3>
+          <p>Verifikasi email dari token</p>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Email berhasil diverifikasi."
+}</pre>
         </div>
+
+        <h2>👥 User Routes</h2>
+
         <div class="endpoint">
-          <strong>DELETE</strong> <code>/users/:id</code><br />
-          Hapus user. <em>(admin only)</em>
+          <h3>GET /users</h3>
+          <p>Ambil semua user (Admin only)</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;admin_token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "users": [
+    {
+      "id": "xxx",
+      "name": "Budi",
+      "email": "budi@example.com",
+      "role": "user"
+    }
+  ]
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>GET /users/:id</h3>
+          <p>Ambil detail user (Admin atau user itu sendiri)</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "user": {
+    "id": "xxx",
+    "name": "Budi",
+    "email": "budi@example.com",
+    "role": "user"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>PUT /users/:id</h3>
+          <p>Update user (Admin atau user itu sendiri)</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Request Body:</strong>
+          <pre>{
+  "name": "Budi Update",
+  "email": "budi@baru.com"
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "User berhasil diupdate",
+  "user": {
+    "id": "xxx",
+    "name": "Budi Update",
+    "email": "budi@baru.com",
+    "role": "user"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>DELETE /users/:id</h3>
+          <p>Hapus user (Admin only)</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;admin_token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "User berhasil dihapus"
+}</pre>
         </div>
 
         <hr />
-        <p>Semua endpoint menggunakan JSON sebagai format request dan response.</p>
+        <p><em>Semua response dikirim dalam format JSON.</em></p>
       </body>
     </html>
   `);

@@ -111,6 +111,9 @@ const login = async (req, res, next) => {
         email: user.email,
         name: user.name,
         role: user.role,
+        isVerified: user.isVerified,
+        authType: user.authType,
+        avatar: user.avatar,
       },
     });
   } catch (error) {
@@ -162,6 +165,8 @@ const googleCallback = async (req, res, next) => {
         name: user.name,
         role: user.role,
         authType: user.authType,
+        isVerified: user.isVerified,
+        avatar: user.avatar,
       },
     });
   } catch (error) {

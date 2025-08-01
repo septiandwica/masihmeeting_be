@@ -10,6 +10,8 @@ const ffprobeStatic = require("ffprobe-static");
 
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
+const FormData = require("form-data");
+
 // @desc Transcribe link YouTube
 // @route POST /transcribe/youtube
 // @access Private
@@ -115,11 +117,6 @@ const transcribeAudio = async (req, res, next) => {
     next(error);
   }
 };
-
-const axios = require("axios");
-const fs = require("fs");
-const FormData = require("form-data");
-const Transcription = require("../models/Transcription");
 
 // @desc Transcribe video file
 // @route POST /transcribe/video

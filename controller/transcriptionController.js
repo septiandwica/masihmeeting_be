@@ -38,7 +38,7 @@ const transcribeYouTube = async (req, res, next) => {
       { url }
     );
 
-    const { mongo_id, transcription, summary } = data;
+    const { mongo_id, transcription } = data;
 
     // Simpan ke MongoDB Express
     const newTranscript = await Transcription.create({
@@ -49,7 +49,6 @@ const transcribeYouTube = async (req, res, next) => {
       user: userId,
       transcription,
       externalId: mongo_id,
-      summary,
     });
 
     res.status(201).json({

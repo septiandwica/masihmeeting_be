@@ -63,7 +63,10 @@ router.get("/", (req, res) => {
     "id": "xxx",
     "email": "budi@example.com",
     "name": "Budi",
-    "role": "user"
+    "role": "user",
+    "isVerified": "true",
+    "authType": "local",
+    "avatar": ""
   }
 }</pre>
         </div>

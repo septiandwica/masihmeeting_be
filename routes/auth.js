@@ -60,4 +60,10 @@ router.get(
  */
 router.get("/verify/:token", verifyEmail);
 
+/**
+ * @route   GET /auth/resend/:id
+ * @desc    Verifikasi email user berdasarkan token
+ * @access  Public
+ */
+
 module.exports = router;

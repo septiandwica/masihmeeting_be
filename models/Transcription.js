@@ -7,12 +7,17 @@ const transcriptionSchema = mongoose.Schema({
     enum: ["youtube", "audio", "video"],
     required: true,
   },
-  originalSource: String,
+  originalSource: {
+    type: String,
+    default: "file",
+  },
   duration: Number,
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  transcription: String,
+  summary: String,
   externalId: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

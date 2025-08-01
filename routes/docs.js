@@ -168,6 +168,81 @@ router.get("/", (req, res) => {
 }</pre>
         </div>
 
+
+        <h2>📝 Transcription Routes</h2>
+
+        <div class="endpoint">
+          <h3>POST /transcribe/youtube</h3>
+          <p>Transkrip video YouTube ke teks dan simpan ke database</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Request Body:</strong>
+          <pre>{
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Transkripsi berhasil disimpan",
+  "data": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 123.45,
+    "type": "youtube",
+    "title": "Judul Video"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>POST /transcribe/audio</h3>
+          <p>Upload file audio untuk ditranskripsi</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Form-Data:</strong>
+          <ul>
+            <li><code>file</code>: file audio (.mp3, .wav, dll)</li>
+          </ul>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Transkripsi audio berhasil disimpan",
+  "data": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>POST /transcribe/video</h3>
+          <p>Upload file video untuk ditranskripsi</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Form-Data:</strong>
+          <ul>
+            <li><code>file</code>: file video (.mp4, .mov, dll)</li>
+          </ul>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Transkripsi video berhasil disimpan",
+  "data": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 90.8,
+    "type": "video",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
         <hr />
         <p><em>Semua response dikirim dalam format JSON.</em></p>
       </body>

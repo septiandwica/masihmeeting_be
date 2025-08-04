@@ -36,7 +36,7 @@ const transcribeYouTube = async (req, res, next) => {
 
     // // Kirim request ke backend Python
     const { data } = await axios.post(
-      "http://localhost:5000/youtube_subtitle_transcribe",
+      `http://${process.env.AI_URL}/youtube_subtitle_transcribe`,
       { url }
     );
 

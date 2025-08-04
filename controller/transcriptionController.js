@@ -50,6 +50,7 @@ const transcribeYouTube = async (req, res, next) => {
       summary,
       user: userId,
       externalId: _id,
+
     });
 
     res.status(201).json({

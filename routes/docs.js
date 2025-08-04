@@ -230,7 +230,6 @@ router.get("/", (req, res) => {
   <strong>Form-Data:</strong>
   <ul>
     <li><code>file</code>: file video (wajib)</li>
-    <li><code>userId</code>: ID user yang melakukan upload (wajib)</li>
   </ul>
   <strong>Response:</strong>
   <pre>{
@@ -248,6 +247,92 @@ router.get("/", (req, res) => {
   }
 }</pre>
 </div>
+
+
+ <div class="endpoint">
+          <h3>GET /transcribe</h3>
+          <p>Mendapatkan semua transcription user sekarang</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil mendapatkan transcription user",
+  "transcriptions": {[
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"],[]
+  }
+}</pre>
+        </div>
+
+         <div class="endpoint">
+          <h3>GET /transcribe/:id</h3>
+          <p>Mendapatkan details transkripsi dari id transkripsi yang dimiliki user</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil mendapatkan transcription user",
+  "transcription": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>DELETE /transcribe/:id</h3>
+          <p>Menghapus transkripsi dari id transkripsi yang dimiliki user</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil menghapus transkripsi",
+  "transcription": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
+                <div class="endpoint">
+          <h3>PUT /transcribe/:id</h3>
+          <p>Mengedit judul dan summary transkripsi dari id transkripsi yang dimiliki user</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Request Body:</strong>
+          <pre>{
+  "title": "Title edit",
+  "summary": "lorem ipsum dolor sir amet",
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil mengubah transkripsi",
+  "transcription": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
 
         <hr />
         <p><em>Semua response dikirim dalam format JSON.</em></p>

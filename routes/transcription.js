@@ -4,6 +4,8 @@ const {
   transcribeYouTube,
   transcribeVideo,
   transcribeAudio,
+  getCurrentUserTranscription,
+  getTranscriptionDetails,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
 const { upload } = require("../middlewares/multerMiddleware");
@@ -29,5 +31,19 @@ router.post("/video", isLoggedIn, upload.single("file"), transcribeVideo);
  * @access  Private
  */
 router.post("/audio", isLoggedIn, upload.single("file"), transcribeAudio);
+
+/**
+ * @route   GET /transcribe
+ * @desc    Get all transcription for self(user)
+ * @access  Private
+ */
+router.get("/", isLoggedIn, getCurrentUserTranscription);
+
+/**
+ * @route   GET /transcribe/:id
+ * @desc    Get details transcription
+ * @access  Private
+ */
+router.get("/:id", isLoggedIn, getTranscriptionDetails);
 
 module.exports = router;

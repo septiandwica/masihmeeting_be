@@ -11,12 +11,14 @@ const ffprobeStatic = require("ffprobe-static");
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const FormData = require("form-data");
+const { default: mongoose } = require("mongoose");
 
 // @desc Transcribe link YouTube
 // @route POST /transcribe/youtube
 // @access Private
 const transcribeYouTube = async (req, res, next) => {
-  const { url, userId } = req.body;
+  const { url } = req.body;
+  const userId = req.user.id;
 
   if (!url || !userId) {
     return res.status(400).json({ message: "URL dan userId wajib diisi" });
@@ -68,7 +70,7 @@ const transcribeYouTube = async (req, res, next) => {
 // @access Private
 const transcribeAudio = async (req, res, next) => {
   const file = req.file;
-  const { userId } = req.body;
+  const userId = req.user.id;
 
   if (!file || !userId) {
     return res
@@ -127,7 +129,7 @@ const transcribeAudio = async (req, res, next) => {
 // @access Private
 const transcribeVideo = async (req, res, next) => {
   const file = req.file;
-  const { userId } = req.body;
+  const userId = req.user.id;
 
   if (!file || !userId) {
     return res
@@ -180,4 +182,59 @@ const transcribeVideo = async (req, res, next) => {
     next(new Error(error.response.data.error));
   }
 };
-module.exports = { transcribeYouTube, transcribeAudio, transcribeVideo };
+
+// @desc Get all transcription for self(user)
+// @route GET /transcribe
+// @access Private
+const getCurrentUserTranscription = async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    const transcriptions = await Transcription.find({ user: userId });
+
+    res.status(200).json({
+      success: true,
+      message: "Berhasil mendapatkan semua data transcription user",
+      transcriptions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTranscriptionDetails = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan.",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Terlarang. Anda bukan owner dari transcription ini",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Berhasil mendapatkan detail transcription",
+      transcription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  transcribeYouTube,
+  transcribeAudio,
+  transcribeVideo,
+  getCurrentUserTranscription,
+  getTranscriptionDetails,
+};

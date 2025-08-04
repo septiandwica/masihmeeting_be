@@ -6,6 +6,8 @@ const {
   transcribeAudio,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
+const { upload } = require("../middlewares/multerMiddleware");
+const multer = require("multer");
 
 /**
  * @route   POST /transcribe/youtube
@@ -19,13 +21,13 @@ router.post("/youtube", isLoggedIn, transcribeYouTube);
  * @desc    Transcribe mp4 ke backend python
  * @access  Private
  */
-router.post("/video", isLoggedIn, transcribeVideo);
+router.post("/video", isLoggedIn, upload.single("file"), transcribeVideo);
 
 /**
  * @route   POST /transcribe/audio
  * @desc    Transcribe mp3 ke backend python
  * @access  Private
  */
-router.post("/audio", isLoggedIn, transcribeAudio);
+router.post("/audio", isLoggedIn, upload.single("file"), transcribeAudio);
 
 module.exports = router;

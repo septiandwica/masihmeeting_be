@@ -18,6 +18,7 @@ const transcriptionSchema = mongoose.Schema({
   },
   transcription: String,
   summary: String,
+  // Untuk akses chatlogs
   externalId: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

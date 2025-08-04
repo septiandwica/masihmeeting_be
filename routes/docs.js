@@ -258,7 +258,7 @@ router.get("/", (req, res) => {
           <pre>{
   "success": true,
   "message": "Berhasil mendapatkan transcription user",
-  "data": {[
+  "transcriptions": {[
     "_id": "xxx",
     "transcription": "Isi transkrip...",
     "summary": "Ringkasan isi...",
@@ -278,7 +278,52 @@ router.get("/", (req, res) => {
           <pre>{
   "success": true,
   "message": "Berhasil mendapatkan transcription user",
-  "data": {
+  "transcription": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+          <h3>DELETE /transcribe/:id</h3>
+          <p>Menghapus transkripsi dari id transkripsi yang dimiliki user</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil menghapus transkripsi",
+  "transcription": {
+    "_id": "xxx",
+    "transcription": "Isi transkrip...",
+    "summary": "Ringkasan isi...",
+    "duration": 45.2,
+    "type": "audio",
+    "originalSource": "file"
+  }
+}</pre>
+        </div>
+
+                <div class="endpoint">
+          <h3>PUT /transcribe/:id</h3>
+          <p>Mengedit judul dan summary transkripsi dari id transkripsi yang dimiliki user</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Request Body:</strong>
+          <pre>{
+  "title": "Title edit",
+  "summary": "lorem ipsum dolor sir amet",
+}</pre>
+          <strong>Response:</strong>
+          <pre>{
+  "success": true,
+  "message": "Berhasil mengubah transkripsi",
+  "transcription": {
     "_id": "xxx",
     "transcription": "Isi transkrip...",
     "summary": "Ringkasan isi...",

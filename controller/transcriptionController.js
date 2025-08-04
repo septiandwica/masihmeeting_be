@@ -231,10 +231,80 @@ const getTranscriptionDetails = async (req, res, next) => {
   }
 };
 
+const deleteTranscription = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan.",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Terlarang. Anda bukan owner dari transcription ini",
+      });
+    }
+
+    await transcription.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "Berhasil menghapus transcription",
+      transcription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateTranscription = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, summary } = req.body;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan.",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Terlarang. Anda bukan owner dari transcription ini",
+      });
+    }
+
+    if (title !== undefined) transcription.title = title;
+    if (summary !== undefined) transcription.summary = summary;
+
+    const updated = await transcription.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Berhasil update data transcription",
+      transcription: updated,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   transcribeYouTube,
   transcribeAudio,
   transcribeVideo,
   getCurrentUserTranscription,
   getTranscriptionDetails,
+  deleteTranscription,
+  updateTranscription,
 };

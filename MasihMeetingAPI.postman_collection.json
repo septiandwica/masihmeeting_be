@@ -168,7 +168,7 @@
 							"variable": [
 								{
 									"key": "token",
-									"value": "57ffb572fecdabfe8c3af7527cf75ab4b3e5c8e7ae3784a0701f8c7d7bde7805"
+									"value": "45e67888d2d555575de12623a745c9931e950c809b032a077baad0d2ffeb47fb"
 								}
 							]
 						}
@@ -377,7 +377,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"https://www.youtube.com/watch?v=Wb6Oc1_SdJw\",\r\n    \"userId\": \"688ae7d0d2b717578331c80e\"\r\n}",
+							"raw": "{\r\n    \"url\": \"https://www.youtube.com/watch?v=Wb6Oc1_SdJw\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -425,6 +425,11 @@
 									"key": "file",
 									"type": "file",
 									"src": "/C:/Users/baiha/Downloads/Weekly Meeting Example.mp4"
+								},
+								{
+									"key": "userId",
+									"value": "688ae7d0d2b717578331c80e",
+									"type": "text"
 								}
 							]
 						},
@@ -469,11 +474,6 @@
 									"key": "file",
 									"type": "file",
 									"src": "/C:/Users/baiha/Downloads/Weekly Meeting Example.mp3"
-								},
-								{
-									"key": "userId",
-									"value": "688ae7d0d2b717578331c80e",
-									"type": "text"
 								}
 							]
 						},
@@ -485,6 +485,149 @@
 							"path": [
 								"transcribe",
 								"audio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transcribtion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/transcribe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transcribtion Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/transcribe/68904d8179f08306f1d74bb2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"68904d8179f08306f1d74bb2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Transcription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/transcribe/68905d19f1ccd92a1e7785fb",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"68905d19f1ccd92a1e7785fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Transcription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Meeting x\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transcribe/6890656c1b4f470bd85b56a1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"6890656c1b4f470bd85b56a1"
 							]
 						}
 					},

@@ -6,6 +6,8 @@ const {
   transcribeAudio,
   getCurrentUserTranscription,
   getTranscriptionDetails,
+  deleteTranscription,
+  updateTranscription,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
 const { upload } = require("../middlewares/multerMiddleware");
@@ -45,5 +47,19 @@ router.get("/", isLoggedIn, getCurrentUserTranscription);
  * @access  Private
  */
 router.get("/:id", isLoggedIn, getTranscriptionDetails);
+
+/**
+ * @route   DELETE /transcribe/:id
+ * @desc    Delete transcription
+ * @access  Private
+ */
+router.delete("/:id", isLoggedIn, deleteTranscription);
+
+/**
+ * @route   UPDATE /transcribe/:id
+ * @desc    Update transcription
+ * @access  Private
+ */
+router.put("/:id", isLoggedIn, updateTranscription);
 
 module.exports = router;

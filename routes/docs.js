@@ -63,7 +63,10 @@ router.get("/", (req, res) => {
     "id": "xxx",
     "email": "budi@example.com",
     "name": "Budi",
-    "role": "user"
+    "role": "user",
+    "isVerified": "true",
+    "authType": "local",
+    "avatar": ""
   }
 }</pre>
         </div>
@@ -219,29 +222,32 @@ router.get("/", (req, res) => {
 }</pre>
         </div>
 
-        <div class="endpoint">
-          <h3>POST /transcribe/video</h3>
-          <p>Upload file video untuk ditranskripsi</p>
-          <strong>Headers:</strong>
-          <pre>Authorization: Bearer &lt;token&gt;</pre>
-          <strong>Form-Data:</strong>
-          <ul>
-            <li><code>file</code>: file video (.mp4, .mov, dll)</li>
-          </ul>
-          <strong>Response:</strong>
-          <pre>{
+<div class="endpoint">
+  <h3>POST /transcribe/video</h3>
+  <p>Upload file video (.mp4, .mov) lalu otomatis diubah ke audio dan ditranskrip</p>
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+  <strong>Form-Data:</strong>
+  <ul>
+    <li><code>file</code>: file video (wajib)</li>
+    <li><code>userId</code>: ID user yang melakukan upload (wajib)</li>
+  </ul>
+  <strong>Response:</strong>
+  <pre>{
   "success": true,
-  "message": "Transkripsi video berhasil disimpan",
-  "data": {
+  "message": "Berhasil membuat transcription",
+  "transcript": {
     "_id": "xxx",
+    "type": "video",
+    "title": "namafile.mp4",
+    "originalSource": "namafile.mp4",
     "transcription": "Isi transkrip...",
     "summary": "Ringkasan isi...",
-    "duration": 90.8,
-    "type": "video",
-    "originalSource": "file"
+    "duration": 90,
+    "user": "userId"
   }
 }</pre>
-        </div>
+</div>
 
         <hr />
         <p><em>Semua response dikirim dalam format JSON.</em></p>

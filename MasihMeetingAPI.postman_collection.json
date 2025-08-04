@@ -356,6 +356,141 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Transcribe",
+			"item": [
+				{
+					"name": "Youtube",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"https://www.youtube.com/watch?v=Wb6Oc1_SdJw\",\r\n    \"userId\": \"688ae7d0d2b717578331c80e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transcribe/youtube",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"youtube"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/baiha/Downloads/Weekly Meeting Example.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/transcribe/video",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"video"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Audio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/baiha/Downloads/Weekly Meeting Example.mp3"
+								},
+								{
+									"key": "userId",
+									"value": "688ae7d0d2b717578331c80e",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/transcribe/audio",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"audio"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [

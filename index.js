@@ -49,7 +49,8 @@ mongoose
     app.listen(PORT, () => {
       console.log(
         `Server running on: http://${process.env.HOSTNAME}:${process.env.PORT}
-Client running on: http://${process.env.CLIENT_URL}`
+Client running on: http://${process.env.CLIENT_URL}
+AI Backend running on: http://${process.env.AI_URL}`
       );
       console.log("---- Logger ----");
     });

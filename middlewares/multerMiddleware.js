@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 
     const destinationPath = path.join(
       __dirname,
-      "../../masihmeeting-py-be",
+      `../../${process.env.AI_BACKEND_FOLDER}`,
       folder
     );
     cb(null, destinationPath);

@@ -1,3 +1,4 @@
+const Transcription = require("../models/Transcription");
 const User = require("../models/User");
 
 // @desc    Get all users
@@ -89,9 +90,51 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+// @desc    get current user stats
+// @route   GET /users/:id/stats
+// @access  Private
+const getUserStats = async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    const transcriptions = await Transcription.find({ user: userId });
+    let quizMade = 0;
+    let percentage = 0;
+    let counted = 0;
+
+    if (transcriptions.length > 0) {
+      transcriptions.forEach((e) => {
+        if (e.mcqs?.length > 0) {
+          quizMade += 1;
+        }
+
+        if (e.quizResults?.answers?.length > 0) {
+          counted += 1;
+          percentage += e.quizResults.percentage;
+        }
+      });
+    }
+
+    const averagePercentage = counted > 0 ? percentage / counted : 0;
+
+    return res.status(200).json({
+      success: true,
+      message: "Berhasil mendapatkan stats user",
+      data: {
+        total: transcriptions?.length,
+        quizMade: quizMade * 5,
+        averagePercentage,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
+  getUserStats,
 };

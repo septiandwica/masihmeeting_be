@@ -10,6 +10,9 @@ const {
   updateTranscription,
   askQuestion,
   getChatHistory,
+  generateQuiz,
+  getQuiz,
+  submitQuiz,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
 const { upload } = require("../middlewares/multerMiddleware");
@@ -77,5 +80,26 @@ router.post("/:id/ask", isLoggedIn, askQuestion);
  * @access  Private
  */
 router.get("/:id/ask", isLoggedIn, getChatHistory);
+
+/**
+ * @route   POST /transcribe/:id/quiz
+ * @desc    Generate quiz berdasarkan summary
+ * @access  Private
+ */
+router.post("/:id/quiz", isLoggedIn, generateQuiz);
+
+/**
+ * @route   GET /transcribe/:id/quiz
+ * @desc    Get quiz yang sudah di-generate
+ * @access  Private
+ */
+router.get("/:id/quiz", isLoggedIn, getQuiz);
+
+/**
+ * @route   GET /transcribe/:id/quiz
+ * @desc    Get quiz yang sudah di-generate
+ * @access  Private
+ */
+router.post("/:id/submit_quiz", isLoggedIn, submitQuiz);
 
 module.exports = router;

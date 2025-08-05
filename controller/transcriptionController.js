@@ -412,6 +412,158 @@ const getChatHistory = async (req, res, next) => {
   }
 };
 
+// @desc Generate MCQ buat quizzz
+// @route POST /transcribe/:id/quiz
+// @access Private
+const generateQuiz = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke transcription ini.",
+      });
+    }
+
+    const externalId = transcription.externalId;
+
+    const response = await axios.post(
+      `http://${process.env.AI_URL}/generate_quiz`,
+      {
+        _id: externalId,
+        quiz_level: "medium",
+      }
+    );
+
+    transcription.mcqs = response.data.mcqs;
+
+    await transcription.save();
+    return res.status(201).json({
+      success: true,
+      mcqs: response.data.mcqs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Ambil quiz yang udah di generate
+// @route GET /transcribe/:id/quiz
+// @access Private
+const getQuiz = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke transcription ini.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Berhasil mendapatkan quiz",
+      mcqs: transcription.mcqs || [],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Submit quiz yang sudah di generate
+// @route POST /transcribe/:id/submit_quiz
+// @access Private
+const submitQuiz = async (req, res, next) => {
+  const { id } = req.params;
+  const { answers } = req.body;
+
+  if (!answers) {
+    return res.status(400).json({
+      success: false,
+      message: "Field answer dalam request diperlukan",
+    });
+  }
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke transcription ini.",
+      });
+    }
+
+    const mcqs = transcription.mcqs || [];
+
+    if (mcqs.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Quiz tidak ada atau belum digenerate!",
+      });
+    }
+
+    if (!Array.isArray(answers) || answers.length !== mcqs.length) {
+      return res.status(400).json({
+        success: false,
+        message: "Jumlah jawaban tidak sesuai dengan jumlah pertanyaan.",
+      });
+    }
+
+    let score = 0;
+    mcqs.forEach((e, i) => {
+      if (e.correct === answers[i].selected) {
+        score++;
+      }
+    });
+
+    const result = {
+      correctCount: score,
+      wrongCount: mcqs.length - score,
+      percentage: score / mcqs.length,
+      answers,
+    };
+
+    transcription.quizResults = result;
+    await transcription.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Quiz berhasil disubmit",
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   transcribeYouTube,
   transcribeAudio,
@@ -422,4 +574,7 @@ module.exports = {
   updateTranscription,
   askQuestion,
   getChatHistory,
+  generateQuiz,
+  getQuiz,
+  submitQuiz,
 };

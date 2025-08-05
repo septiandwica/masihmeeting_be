@@ -171,6 +171,23 @@ router.get("/", (req, res) => {
 }</pre>
         </div>
 
+        <div class="endpoint">
+          <h3>GET /users/:id/stats</h3>
+          <p>Get user stats buat dashboard</p>
+          <strong>Headers:</strong>
+          <pre>Authorization: Bearer &lt;token&gt;</pre>
+          <strong>Response:</strong>
+          <pre>{
+    "success": true,
+    "message": "Berhasil mendapatkan stats user",
+    "data": {
+        "total": 10,
+        "quizMade": 10,
+        "averagePercentage": 0.30000000000000004
+    }
+}</pre>
+        </div>
+
 
         <h2>📝 Transcription Routes</h2>
 

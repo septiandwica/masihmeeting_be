@@ -718,6 +718,125 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Quiz",
+			"item": [
+				{
+					"name": "Generate Quiz",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/transcribe/6890656c1b4f470bd85b56a1/quiz",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"6890656c1b4f470bd85b56a1",
+								"quiz"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quiz",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/transcribe/6890656c1b4f470bd85b56a1/quiz",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"6890656c1b4f470bd85b56a1",
+								"quiz"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Quiz",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"answers\": [\r\n    { \"questionIndex\": 0, \"selected\": \"c\" },\r\n    { \"questionIndex\": 1, \"selected\": \"c\" },\r\n    { \"questionIndex\": 2, \"selected\": \"c\" },\r\n    { \"questionIndex\": 3, \"selected\": \"c\" },\r\n    { \"questionIndex\": 4, \"selected\": \"c\" }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transcribe/6890656c1b4f470bd85b56a1/submit_quiz",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transcribe",
+								"6890656c1b4f470bd85b56a1",
+								"submit_quiz"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [

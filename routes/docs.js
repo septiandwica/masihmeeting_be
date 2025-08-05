@@ -381,6 +381,105 @@ router.get("/", (req, res) => {
 }</pre>
 </div>
 
+<div class="endpoint">
+  <h3>POST /transcribe/:id/quiz</h3>
+  <p>Menghasilkan soal pilihan ganda (quiz) dari hasil transkripsi tertentu.</p>
+
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+
+  <strong>Response:</strong>
+  <pre>{
+  "success": true,
+  "mcqs": [
+    {
+      "question": "Apa inti pembahasan dalam video?",
+      "options": {
+        "a": "Topik A",
+        "b": "Topik B",
+        "c": "Topik C",
+        "d": "Topik D"
+      },
+      "answer": "b"
+    },
+    ...
+  ]
+}</pre>
+</div>
+
+<div class="endpoint">
+  <h3>GET /transcribe/:id/quiz</h3>
+  <p>Mendapatkan quiz (soal dan jawaban) yang sebelumnya telah digenerate dari transkripsi.</p>
+
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+
+  <strong>Response:</strong>
+  <pre>{
+  "success": true,
+  "message": "Berhasil mendapatkan quiz",
+  "mcqs": [
+    {
+      "question": "Apa inti pembahasan dalam video?",
+      "options": {
+        "a": "Topik A",
+        "b": "Topik B",
+        "c": "Topik C",
+        "d": "Topik D"
+      },
+      "answer": "b"
+    },
+    ...
+  ]
+}</pre>
+</div>
+
+<div class="endpoint">
+  <h3>POST /transcribe/:id/submit_quiz</h3>
+  <p>Submit jawaban quiz berdasarkan hasil transkripsi, sekaligus menghitung skor dan menyimpan hasilnya.</p>
+
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+
+  <strong>Body:</strong>
+  <pre>{
+  "answers": [
+    {
+      "questionIndex": 0,
+      "selected": "a"
+    },
+    {
+      "questionIndex": 1,
+      "selected": "c"
+    },
+    ...
+  ]
+}</pre>
+
+  <strong>Response:</strong>
+  <pre>{
+  "success": true,
+  "message": "Quiz berhasil disubmit",
+  "result": {
+    "correctCount": 3,
+    "wrongCount": 2,
+    "percentage": 0.6,
+    "answers": [
+      {
+        "questionIndex": 0,
+        "selected": "a"
+      },
+      {
+        "questionIndex": 1,
+        "selected": "c"
+      },
+      ...
+    ]
+  }
+}</pre>
+</div>
+
+
         <hr />
         <p><em>Semua response dikirim dalam format JSON.</em></p>
       </body>

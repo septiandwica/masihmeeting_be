@@ -12,6 +12,7 @@ ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const FormData = require("form-data");
 const { default: mongoose } = require("mongoose");
+const moment = require("moment-timezone");
 
 // @desc Transcribe link YouTube
 // @route POST /transcribe/youtube
@@ -193,18 +194,29 @@ const getCurrentUserTranscription = async (req, res, next) => {
   try {
     const transcriptions = await Transcription.find({ user: userId });
 
+    const formattedTranscriptions = transcriptions.map((t) => ({
+      ...t.toObject(),
+      createdAtLocal: moment(t.createdAt)
+        .tz("Asia/Jakarta")
+        .format("YYYY-MM-DD HH:mm:ss"),
+    }));
+
     res.status(200).json({
       success: true,
       message: "Berhasil mendapatkan semua data transcription user",
-      transcriptions,
+      transcriptions: formattedTranscriptions,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc Get transriptions details
+// @route GET /transcribe/:id
+// @access Private
 const getTranscriptionDetails = async (req, res, next) => {
   const { id } = req.params;
+
   try {
     const transcription = await Transcription.findById(id);
 
@@ -222,16 +234,26 @@ const getTranscriptionDetails = async (req, res, next) => {
       });
     }
 
+    const formattedTranscription = {
+      ...transcription.toObject(),
+      createdAtLocal: moment(transcription.createdAt)
+        .tz("Asia/Jakarta")
+        .format("YYYY-MM-DD HH:mm:ss"),
+    };
+
     return res.status(200).json({
       success: true,
       message: "Berhasil mendapatkan detail transcription",
-      transcription,
+      transcription: formattedTranscription,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc Delete transriptions
+// @route DELETE /transcribe/:id
+// @access Private
 const deleteTranscription = async (req, res, next) => {
   const { id } = req.params;
 
@@ -264,6 +286,9 @@ const deleteTranscription = async (req, res, next) => {
   }
 };
 
+// @desc Update transription title or summary
+// @route PUT /transcribe/:id
+// @access Private
 const updateTranscription = async (req, res, next) => {
   const { id } = req.params;
   const { title, summary } = req.body;
@@ -300,6 +325,94 @@ const updateTranscription = async (req, res, next) => {
   }
 };
 
+// @desc Ask about transription summary using chat AI API
+// @route POST /transcribe/:id/ask
+// @access Private
+const askQuestion = async (req, res, next) => {
+  const { id } = req.params;
+  const { question } = req.body;
+
+  if (!question) {
+    return res.status(400).json({ error: "Pertanyaan tidak boleh kosong" });
+  }
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke transcription ini.",
+      });
+    }
+
+    const externalId = transcription.externalId;
+
+    const response = await axios.post(
+      `http://${process.env.AI_URL}/ask_question`,
+      {
+        _id: externalId,
+        question,
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      answer: response.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Ask about transription summary using chat AI API
+// @route GET /transcribe/:id/ask
+// @access Private
+const getChatHistory = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res.status(404).json({
+        success: false,
+        message: "Transcription tidak ditemukan",
+      });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke transcription ini.",
+      });
+    }
+
+    const externalId = transcription.externalId;
+
+    const response = await axios.post(
+      `http://${process.env.AI_URL}/get_chat_history`,
+      {
+        _id: externalId,
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      history: response.data.chat_history,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   transcribeYouTube,
   transcribeAudio,
@@ -308,4 +421,6 @@ module.exports = {
   getTranscriptionDetails,
   deleteTranscription,
   updateTranscription,
+  askQuestion,
+  getChatHistory,
 };

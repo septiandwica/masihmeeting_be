@@ -8,6 +8,8 @@ const {
   getTranscriptionDetails,
   deleteTranscription,
   updateTranscription,
+  askQuestion,
+  getChatHistory,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
 const { upload } = require("../middlewares/multerMiddleware");
@@ -61,5 +63,19 @@ router.delete("/:id", isLoggedIn, deleteTranscription);
  * @access  Private
  */
 router.put("/:id", isLoggedIn, updateTranscription);
+
+/**
+ * @route   POST /transcribe/:id/ask
+ * @desc    tanya soal summary transcription
+ * @access  Private
+ */
+router.post("/:id/ask", isLoggedIn, askQuestion);
+
+/**
+ * @route   GET /transcribe/:id/ask
+ * @desc    Dapetin history chat
+ * @access  Private
+ */
+router.get("/:id/ask", isLoggedIn, getChatHistory);
 
 module.exports = router;

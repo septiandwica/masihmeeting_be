@@ -334,6 +334,53 @@ router.get("/", (req, res) => {
 }</pre>
         </div>
 
+        <div class="endpoint">
+  <h3>POST /transcribe/:id/ask</h3>
+  <p>Mengirimkan pertanyaan berdasarkan isi transkripsi (summary atau transcription)</p>
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+  <strong>Request Body:</strong>
+  <pre>{
+  "question": "Apa poin utama dari meeting ini?"
+}</pre>
+  <strong>Response:</strong>
+  <pre>{
+  "success": true,
+  "data": {
+    "answer": "Penjelasan berdasarkan transkrip...",
+    "question": "Apa poin utama dari meeting ini?",
+    "transcription_id": "xxx",
+    "chat_log_id": "xxx",
+    "conversation_history_count": 3
+  }
+}</pre>
+</div>
+
+<div class="endpoint">
+  <h3>GET /transcribe/:id/ask</h3>
+  <p>Mendapatkan riwayat chat sebelumnya yang dikaitkan dengan transkripsi tersebut</p>
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+  <strong>Response:</strong>
+  <pre>{
+  "success": true,
+  "chat_history": [
+    {
+      "_id": "chatlogId1",
+      "question": "Siapa saja pembicara dalam video ini?",
+      "answer": "Pembicara dalam video ini adalah...",
+      "created_at": "2025-08-05T12:34:56.789Z"
+    },
+    {
+      "_id": "chatlogId2",
+      "question": "Apa yang dibahas pada menit ke 10?",
+      "answer": "Topik pada menit ke 10 adalah...",
+      "created_at": "2025-08-05T12:35:40.123Z"
+    }
+  ]
+}</pre>
+</div>
+
         <hr />
         <p><em>Semua response dikirim dalam format JSON.</em></p>
       </body>

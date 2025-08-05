@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
     });
 
     // Kirim email verifikasi
-    const verifyUrl = `${process.env.CLIENT_URL}/verify/${verifyToken}`;
+    const verifyUrl = `http://${process.env.CLIENT_URL}/verify/${verifyToken}`;
     await sendMail(
       email,
       "Verifikasi Email MasihMeeting",

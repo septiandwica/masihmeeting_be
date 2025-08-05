@@ -7,6 +7,7 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  getUserStats,
 } = require("../controller/userController");
 
 // Middleware
@@ -40,5 +41,12 @@ router.put("/:id", isLoggedIn, checkAdmin, updateUser);
  * @access  Admin only
  */
 router.delete("/:id", isLoggedIn, checkAdmin, deleteUser);
+
+/**
+ * @route   DELETE /users/:id
+ * @desc    Menghapus user
+ * @access  Admin only
+ */
+router.get("/:id/stats", isLoggedIn, getUserStats);
 
 module.exports = router;

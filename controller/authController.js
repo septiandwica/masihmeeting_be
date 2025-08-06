@@ -148,27 +148,13 @@ const getProfile = async (req, res, next) => {
 // @access  Public
 const googleCallback = async (req, res, next) => {
   try {
-    // User sudah di-autentikasi oleh Passport, tersedia di req.user
     const user = req.user;
-
-    // Generate JWT token untuk FE
     const token = generateToken(user);
 
-    // Kirim token dan user info ke FE (bisa redirect atau response JSON)
-    res.json({
-      success: true,
-      message: "Google login berhasil",
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        authType: user.authType,
-        isVerified: user.isVerified,
-        avatar: user.avatar,
-      },
-    });
+    // Redirect ke frontend (Vite dev server) dengan token sebagai query param
+    const redirectUrl = `http://${process.env.CLIENT_URL}/oauth/callback?token=${token}`;
+
+    res.redirect(redirectUrl);
   } catch (error) {
     next(error);
   }

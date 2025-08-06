@@ -374,6 +374,13 @@ router.get("/", (req, res) => {
 </div>
 
 <div class="endpoint">
+  <h3>GET /transcribe/:id/download</h3>
+  <p>Download transcription dan summary ke pdf</p>
+  <strong>Headers:</strong>
+  <pre>Authorization: Bearer &lt;token&gt;</pre>
+</div>
+
+<div class="endpoint">
   <h3>GET /transcribe/:id/ask</h3>
   <p>Mendapatkan riwayat chat sebelumnya yang dikaitkan dengan transkripsi tersebut</p>
   <strong>Headers:</strong>

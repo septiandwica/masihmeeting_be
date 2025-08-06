@@ -14,6 +14,8 @@ const FormData = require("form-data");
 const { default: mongoose } = require("mongoose");
 const moment = require("moment-timezone");
 
+const { generateTranscriptionPDF } = require("../utils/pdfGenerator");
+
 // @desc Transcribe link YouTube
 // @route POST /transcribe/youtube
 // @access Private
@@ -565,6 +567,44 @@ const submitQuiz = async (req, res, next) => {
   }
 };
 
+// @desc Download transcription as PDF
+// @route GET /transcribe/:id/download
+// @access Private
+const downloadTranscriptionPDF = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const transcription = await Transcription.findById(id);
+
+    if (!transcription) {
+      return res
+        .status(404)
+        .json({ message: "Transcription tidak ditemukan." });
+    }
+
+    if (!transcription.user.equals(req.user.id)) {
+      return res.status(403).json({ message: "Tidak memiliki akses." });
+    }
+
+    const buffer = await generateTranscriptionPDF({
+      title: transcription.title,
+      transcription: transcription.transcription,
+      summary: transcription.summary,
+      createdAt: transcription.createdAt,
+    });
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${transcription.title}.pdf"`,
+      "Content-Length": buffer.length,
+    });
+
+    res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   transcribeYouTube,
   transcribeAudio,
@@ -578,4 +618,5 @@ module.exports = {
   generateQuiz,
   getQuiz,
   submitQuiz,
+  downloadTranscriptionPDF,
 };

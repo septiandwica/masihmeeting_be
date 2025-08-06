@@ -13,6 +13,7 @@ const {
   generateQuiz,
   getQuiz,
   submitQuiz,
+  downloadTranscriptionPDF,
 } = require("../controller/transcriptionController");
 const { isLoggedIn } = require("../middlewares/authMiddlewares");
 const { upload } = require("../middlewares/multerMiddleware");
@@ -101,5 +102,12 @@ router.get("/:id/quiz", isLoggedIn, getQuiz);
  * @access  Private
  */
 router.post("/:id/submit_quiz", isLoggedIn, submitQuiz);
+
+/**
+ * @route   GET /transcribe/:id/pdf
+ * @desc    Get transcribtion PDF and its summary
+ * @access  Private
+ */
+router.get("/:id/download", isLoggedIn, downloadTranscriptionPDF);
 
 module.exports = router;
